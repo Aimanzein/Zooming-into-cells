@@ -13,7 +13,7 @@
    CLASSES:   optional starting list of classes, e.g. ['10A', '10B']. You can also edit
               the classes later in the teacher panel.
    ================================================================ */
-const BOARD_URL = '';
+const BOARD_URL = 'https://script.google.com/macros/s/AKfycbz1jAnLwShaOGNm2fU6blwMRBlhePTEJYVsjO6s05fUZFpgvj4NIpZ1iu-qW1s-JAmf/exec';
 const CLASSES = [];
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2123,7 +2123,7 @@ $('codeCancel').addEventListener('click', () => { $('codeForm').hidden = true; }
 $('codeForm').addEventListener('submit', e => {
   e.preventDefault(); const code = $('codeIn').value.trim(); if (!code) return;
   api({action:'dash', code}).then(r => {
-    if (!r.ok) { toast(r.error === 'locked' ? 'Too many wrong tries. Try again in 15 minutes.' : 'That code is not right.'); return; }
+    if (!r.ok) { toast(r.error === 'locked' ? 'Too many wrong tries. Try again in 15 minutes.' : r.error === 'setup' ? 'No teacher code is set yet. Type one in cell B2 of the Settings tab in your Google Sheet.' : 'That code is not right.'); return; }
     TCODE = code; try { sessionStorage.setItem('zoomTcode', code); } catch(e) {}
     $('codeForm').hidden = true; openTeacher(r);
   }).catch(() => toast('Could not reach the scoreboard.'));
